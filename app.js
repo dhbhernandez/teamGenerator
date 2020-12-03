@@ -28,11 +28,7 @@ const questionsYourRole = {
     choices: ["Intern", "Engineer", "Manager"],
 };
 
-const fileNameQuestion = {
-    type: "input",
-    message: "Please enter valid file name",
-    name: "fileName",
-};
+// node 
 
 const Questions = {
     Manager: [
@@ -108,7 +104,59 @@ const Questions = {
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
 
+const startApp = () => {
+    selectRole();
+};
 
+const addOrFinish = () => {
+    inquirer.prompt(firstQuestion).then((answer) => {
+        if (answer.Add === "Add Member") {
+            selectRole();
+        } else {
+            //generateTeam();
+            // getFileName();
+        }
+    });
+};
+
+const selectRole = () => {
+    inquirer.prompt(questionsYourRole).then((answer) => {
+        console.log(answer);
+        roleQuestions(Questions[answer.role], answer.role);
+    });
+};
+const roleQuestions = (questions, role) => {
+    inquirer.prompt(questions).then((answer) => {
+        //console.log(answer);
+        let member = {};
+        if (role === "Manager") {
+            member = new Manager(
+                answer.name,
+                answer.id,
+                answer.email,
+                answer.officeNumber
+            );
+        } else if (role === "Engineer") {
+            member = new Engineer(
+                answer.name,
+                answer.id,
+                answer.email,
+                answer.gitHubUserName
+            );
+        } else if (role === "Intern") {
+            member = new Intern(answer.name, answer.id, answer.email, answer.school);
+        }
+        teamMembers.push(member);
+        addOrFinish();
+    });
+};
+
+
+// const isFileNameValid = (fileName) => {
+//   if(fileName === )
+// }
+
+startApp();
 
 
 // After you have your html, you're now ready to create an HTML file using the HTML
